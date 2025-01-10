@@ -35,7 +35,7 @@ const CreateClientForm = () => {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_ENDPOINT}/api/create-client`,
+        `${process.env.REACT_APP_API_ENDPOINT}/api/client-token`,
         {
           type: 'person',
           email: formData.email,
@@ -66,7 +66,7 @@ const CreateClientForm = () => {
       {!response ? (
         <Box component="form" onSubmit={handleSubmit}>
           <Typography variant="h5" gutterBottom>
-            Create Client
+            Create and verify Client
           </Typography>
           <TextField
             fullWidth
@@ -138,7 +138,7 @@ const CreateClientForm = () => {
             <Box
               sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
             >
-              <ComplyCubeIntegration clientId={response.id} />
+              <ComplyCubeIntegration token={response.token} />
               <Button
                 variant="outlined"
                 color="primary"
