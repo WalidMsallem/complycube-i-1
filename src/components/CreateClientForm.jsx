@@ -125,13 +125,13 @@ const CreateClientForm = () => {
               <Grid item xs={6}>
                 <Typography variant="subtitle1">First Name:</Typography>
                 <Typography variant="body1">
-                  {response.personDetails.firstName}
+                  {formData.firstName}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="subtitle1">Last Name:</Typography>
                 <Typography variant="body1">
-                  {response.personDetails.lastName}
+                  {formData.lastName}
                 </Typography>
               </Grid>
             </Grid>
