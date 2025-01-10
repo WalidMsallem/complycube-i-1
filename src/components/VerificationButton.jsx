@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ComplyCubeIntegration = ({ token }) => {
+const ComplyCubeIntegration = ({ token, setShowVerifyButton }) => {
   const startVerification = () => {
     if (token) {
       window.ComplyCube.mount({
@@ -9,7 +9,8 @@ const ComplyCubeIntegration = ({ token }) => {
           console.log('Capture complete', data)
         },
         onModalClose: function () {
-          window.ComplyCube.close()
+          setShowVerifyButton(false)
+          window.ComplyCube.updateSettings({ isModalOpen: false })
         },
       })
     }
@@ -18,7 +19,6 @@ const ComplyCubeIntegration = ({ token }) => {
   return (
     <>
       <div id="complycube-mount"></div>
-
       <button onClick={() => startVerification()}>Start verification</button>
     </>
   )

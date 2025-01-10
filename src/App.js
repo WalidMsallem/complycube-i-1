@@ -1,11 +1,11 @@
 import './App.css'
-import CreateClientForm from './components/CreateClientForm'
+import ClientOnboarding from './components/ClientOnboarding'
 
 function App() {
   return (
     <div className="App">
       <h1>ComplyCube SDK Integration example</h1>
-      <CreateClientForm />
+      <ClientOnboarding />
     </div>
   )
 }

@@ -10,9 +10,11 @@ import {
   Grid,
 } from '@mui/material'
 import axios from 'axios'
-import ComplyCubeIntegration from './ComplyCubeIntegration'
+import VerificationButton from './VerificationButton'
 
-const CreateClientForm = () => {
+const ClientOnboarding = () => {
+  const [showVerifyButton, setShowVerifyButton] = useState(true)
+
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -66,7 +68,7 @@ const CreateClientForm = () => {
       {!response ? (
         <Box component="form" onSubmit={handleSubmit}>
           <Typography variant="h5" gutterBottom>
-            Create and verify Client
+            Create Client
           </Typography>
           <TextField
             fullWidth
@@ -124,21 +126,22 @@ const CreateClientForm = () => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="subtitle1">First Name:</Typography>
-                <Typography variant="body1">
-                  {formData.firstName}
-                </Typography>
+                <Typography variant="body1">{formData.firstName}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="subtitle1">Last Name:</Typography>
-                <Typography variant="body1">
-                  {formData.lastName}
-                </Typography>
+                <Typography variant="body1">{formData.lastName}</Typography>
               </Grid>
             </Grid>
             <Box
               sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
             >
-              <ComplyCubeIntegration token={response.token} />
+              {showVerifyButton && (
+                <VerificationButton
+                  token={response.token}
+                  setShowVerifyButton={setShowVerifyButton}
+                />
+              )}
               <Button
                 variant="outlined"
                 color="primary"
@@ -154,4 +157,4 @@ const CreateClientForm = () => {
   )
 }
 
-export default CreateClientForm
+export default ClientOnboarding
