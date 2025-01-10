@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const ComplyCubeIntegration = () => {
+const ComplyCubeIntegration = ({ clientId }) => {
   const [token, setToken] = useState(null)
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const ComplyCubeIntegration = () => {
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_ENDPOINT}/api/generate-token`,
-          {},
+          { clientId },
           {
             headers: {
               Authorization: process.env.REACT_APP_COMPLYCUBE_API_KEY,
