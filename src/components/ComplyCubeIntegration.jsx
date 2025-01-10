@@ -33,6 +33,9 @@ const ComplyCubeIntegration = ({ clientId }) => {
         onComplete: function (data) {
           console.log('Capture complete', data)
         },
+        onModalClose: function () {
+          window.ComplyCube.unMount()
+        },
       })
     }
   }
