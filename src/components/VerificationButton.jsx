@@ -10,17 +10,24 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
           console.log('Capture complete', data)
           try {
             const checks = [
-              {
-                documentId: data.documentCapture.documentId,
-                type: 'proof_of_address_check',
-              },
+              ...([
+                'driving_license',
+                'tax_document',
+                'bank_statement',
+                'utility_bill',
+              ].includes(data.documentCapture.type)
+                ? {
+                    documentId: data.documentCapture.documentId,
+                    type: 'proof_of_address_check',
+                  }
+                : {}),
               {
                 type: 'document_check',
-                documentId: data.documentCapture.livePhotoId,
+                documentId: data.documentCapture.documentId,
               },
               {
-                livePhotoId: data.faceCapture.documentId,
-                documentId: data.documentCapture.documentId,
+                livePhotoId: data.documentCapture.documentId,
+                documentId: data.faceCapture.livePhotoId,
                 type: 'identity_check',
               },
               { type: 'extensive_screening_check' },
