@@ -45,7 +45,9 @@ const ClientChecksList = ({ clientId }) => {
   }
 
   useEffect(() => {
-    fetchChecks()
+    if (clientId){
+      fetchChecks()
+    }
   }, [clientId, pagination])
 
   const handleNextPage = () => {
