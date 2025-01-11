@@ -1,4 +1,4 @@
-// ask user for Consent before starting, limit documents types, show custom landing message
+// ask user for Consent before starting, limit documents types, show custom landing message, allow bank statement for POA
 export const customConfig1 = () => ({
   stages: [
     {
