@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# ComplyCube Web SDK Demonstration
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates the integration of the ComplyCube Web SDK to showcase its capabilities for capturing user data, running checks, and listing results. It serves as a practical example of how the SDK can be utilized to streamline onboarding and compliance workflows.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+1- User Data Submission:
+Users can input their details (email, first name, and last name) through a form. These details are sent to the backend, which generates a token using the ComplyCube API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2- Data Capture:
+The ComplyCube Web SDK modal is used to capture user documents or biometrics. The token is used to initialize the modal, and data like documentId or livePhotoId is returned on completion.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3- Automated Checks:
+After capturing the data, a few predefined checks are run, such as:
 
-### `npm test`
+- Proof of Address Check: Validates address-related documents like utility bills or bank statements.
+- Document Check: Verifies the authenticity of uploaded documents.
+- Extensive Screening Check: Performs a detailed compliance screening.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+These checks are triggered based on the captured data. However, ComplyCube supports many more check types. For a full list of available checks, please refer to the ComplyCube documentation.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4- Results Listing:
+Users can see a list of all the checks run for a specific client, with details like the type of check, its status, and the outcome.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Flow
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1- Submit User Data:
+The user provides their email, first name, and last name.
+A clientId and a token are generated via the backend.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2- Submit User Data:
+The token is used to initialize the ComplyCube modal.
+The modal collects user-provided documents and biometric data.
+On completion, the captured data (e.g., documentId, livePhotoId) is sent to the backend.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3- Run Checks:
+- Based on the captured data, specific checks are run:
+- For example:
+   proof_of_address_check if the document type matches certain criteria.
+   document_check for document validation.
+   extensive_screening_check for in-depth screening.
+- These checks are sent to the backend, which interacts with ComplyCube's API.
 
-## Learn More
+4- List Check Results:
+- The results of the checks are fetched from the backend.
+- The user can view details such as:
+  Check type.
+  Status (e.g., pending, complete).
+  Outcome (e.g., clear, failed).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to Use
 
-### Code Splitting
+ ##### 1- Lunch
+- Clone the repository and Install dependencies using: npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Set up the required environment variables in a .env file : REACT_APP_API_ENDPOINT=http://localhost:5000
+- Alternatively, you can use our hosted backend: REACT_APP_API_ENDPOINT=https://complycube-be-i-1.onrender.com
 
-### Analyzing the Bundle Size
+ 
+- Start the application:  npm start npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+ ##### 2- Use the Application: 
+ If you don't want to set up the backend locally, you can play around with the hosted frontend: https://complycube-i-1.vercel.app/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Submit user details via the provided form.
+- Launch the verification modal to capture data.
+- View and track the results of the checks in the list.
+- You can navigate thought those result and many more the ComplyCube sandbox dashboard
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ ##### Note: The hosted backend runs on a free instance that may spin down due to inactivity. This can delay requests by up to 50 seconds or more when restarting. For faster responses, use a locally hosted backend.

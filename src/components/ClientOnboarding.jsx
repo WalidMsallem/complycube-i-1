@@ -7,7 +7,8 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Grid,
+  ListItem,
+  List,
 } from '@mui/material'
 import axios from 'axios'
 import VerificationButton from './VerificationButton'
@@ -23,7 +24,7 @@ const ClientOnboarding = () => {
   })
 
   const [loading, setLoading] = useState(false)
-  const [response, setResponse] = useState(null)
+  const [response, setResponse] = useState()
   const [error, setError] = useState(null)
 
   const handleChange = (e) => {
@@ -122,20 +123,34 @@ const ClientOnboarding = () => {
               <Typography variant="h6" gutterBottom>
                 Client Details
               </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1">Email:</Typography>
-                  <Typography variant="body1">{formData.email}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1">First Name:</Typography>
-                  <Typography variant="body1">{formData.firstName}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1">Last Name:</Typography>
-                  <Typography variant="body1">{formData.lastName}</Typography>
-                </Grid>
-              </Grid>
+              <List sx={{ mt: 2 }}>
+                <ListItem>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Typography variant="subtitle1" sx={{ flex: 1 }}>
+                      Email:
+                    </Typography>
+                    <Typography variant="body1">{formData.email}</Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Typography variant="subtitle1" sx={{ flex: 1 }}>
+                      First Name:
+                    </Typography>
+                    <Typography variant="body1">
+                      {formData.firstName}
+                    </Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Typography variant="subtitle1" sx={{ flex: 1 }}>
+                      Last Name:
+                    </Typography>
+                    <Typography variant="body1">{formData.lastName}</Typography>
+                  </Box>
+                </ListItem>
+              </List>
               <Box
                 sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
               >
