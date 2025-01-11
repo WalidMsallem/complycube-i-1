@@ -58,10 +58,8 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
       <div id="complycube-mount"></div>
       <Button
         onClick={() => startVerification()}
-        variant="outlined"
+        variant="contained"
         color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
       >
         Start verification
       </Button>
