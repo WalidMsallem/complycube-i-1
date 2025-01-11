@@ -45,7 +45,7 @@ const ClientChecksList = ({ clientId }) => {
   }
 
   useEffect(() => {
-    if (clientId){
+    if (clientId) {
       fetchChecks()
     }
   }, [clientId, pagination])
@@ -61,7 +61,9 @@ const ClientChecksList = ({ clientId }) => {
   }
 
   const handleRefresh = () => {
-    fetchChecks() // Refresh the data
+    if (clientId) {
+      fetchChecks()
+    }
   }
 
   return (
