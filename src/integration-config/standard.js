@@ -1,6 +1,6 @@
-import axios from "axios"
+import axios from 'axios'
 
-export const standardConfig = (checks, clientId) => ({
+export const standardConfig = (clientId) => ({
   onComplete: async (data) => {
     try {
       const checks = [

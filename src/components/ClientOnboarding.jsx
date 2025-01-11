@@ -163,10 +163,10 @@ const ClientOnboarding = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   flexDirection: 'column',
-                  gap:10
+                  gap: 10,
                 }}
               >
-                <Box display="flex" flexDirection="column"  gap={3}>
+                <Box display="flex" flexDirection="column" gap={3}>
                   <Box display="flex" flexDirection="column">
                     <Typography>run basic check</Typography>
                     <VerificationButton
@@ -174,7 +174,7 @@ const ClientOnboarding = () => {
                       clientId={response.clientId}
                       setShowVerifyButton={setShowVerifyButton}
                       label="Start standard verification"
-                      config={standardConfig}
+                      config={standardConfig(response.clientId)}
                     />
                   </Box>
                   <Box display="flex" flexDirection="column">
@@ -184,7 +184,7 @@ const ClientOnboarding = () => {
                       clientId={response.clientId}
                       setShowVerifyButton={setShowVerifyButton}
                       label="Start custom verification1"
-                      config={customConfig1}
+                      config={customConfig1()}
                     />
                   </Box>
                 </Box>

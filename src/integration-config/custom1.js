@@ -1,16 +1,13 @@
-import axios from 'axios'
-
-export const customConfig1 = (clientId) => ({
+export const customConfig1 = () => ({
   stages: [
     {
-      name: 'intro',
+      name: 'intro custom config',
       options: {
         heading: 'We need to verify your identity',
         message: [
           'In order to open an account, we need to check a few things.',
-          'This will take only a moment',
         ],
-        startButtonText: 'Start Verification',
+        startButtonText: 'Start custom Verification',
       },
     },
     'userConsentCapture',
