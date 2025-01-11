@@ -1,5 +1,5 @@
 import React from 'react'
-import { createChecks } from '../services/create-checks'
+import axios from 'axios'
 
 const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
   const startVerification = () => {
@@ -25,8 +25,17 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
               },
               { type: 'extensive_screening_check' },
             ]
-            await createChecks(checks, clientId)
-          } catch (e) {}
+            const response = await axios.post(
+              `${process.env.REACT_APP_API_ENDPOINT}/api/checks`,
+              {
+                checks,
+                clientId,
+              }
+            )
+            return response.data
+          } catch (e) {
+            console.error(e.response?.data?.message || 'Something went wrong')
+          }
         },
         onModalClose: function () {
           setShowVerifyButton(false)

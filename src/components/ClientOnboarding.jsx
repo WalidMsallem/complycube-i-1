@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import VerificationButton from './VerificationButton'
+import ClientChecksList from './ClientChecksList'
 
 const ClientOnboarding = () => {
   const [showVerifyButton, setShowVerifyButton] = useState(true)
@@ -114,45 +115,48 @@ const ClientOnboarding = () => {
           )}
         </Box>
       ) : (
-        <Card sx={{ mt: 4 }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Client Details
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography variant="subtitle1">Email:</Typography>
-                <Typography variant="body1">{response.email}</Typography>
+        <Box>
+          <Card sx={{ mt: 4 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Client Details
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1">Email:</Typography>
+                  <Typography variant="body1">{response.email}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1">First Name:</Typography>
+                  <Typography variant="body1">{formData.firstName}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1">Last Name:</Typography>
+                  <Typography variant="body1">{formData.lastName}</Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="subtitle1">First Name:</Typography>
-                <Typography variant="body1">{formData.firstName}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="subtitle1">Last Name:</Typography>
-                <Typography variant="body1">{formData.lastName}</Typography>
-              </Grid>
-            </Grid>
-            <Box
-              sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
-            >
-              {showVerifyButton && (
-                <VerificationButton
-                  token={response.token}
-                  clientId={response.clientId}
-                  setShowVerifyButton={setShowVerifyButton}
-                />
-              )}
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleCreateAnother}
+              <Box
+                sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
               >
-                Create Another User
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+                {showVerifyButton && (
+                  <VerificationButton
+                    token={response.token}
+                    clientId={response.clientId}
+                    setShowVerifyButton={setShowVerifyButton}
+                  />
+                )}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleCreateAnother}
+                >
+                  Create Another User
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+          <ClientChecksList clientId={response.clientId} />
+        </Box>
       )}
     </Box>
   )
