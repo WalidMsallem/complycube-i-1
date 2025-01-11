@@ -35,8 +35,10 @@ const ClientChecksList = ({ clientId }) => {
           },
         }
       )
+      const { page, pageSize, totalItems, pages, items } = response.data
 
-      setChecks(response.data.items)
+      items && setChecks(items)
+      setPagination(page, pageSize, totalItems, pages)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch checks')
     } finally {
