@@ -1,10 +1,11 @@
 import React from 'react'
 import axios from 'axios'
+import { Button } from '@mui/material'
 
 const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
   const startVerification = async () => {
     if (token) {
-    const complyCubeInstance = await  window.ComplyCube.mount({
+      const complyCubeInstance = await window.ComplyCube.mount({
         token: token,
         shouldCloseOnOverlayClick: true,
         onComplete: async function (data) {
@@ -44,13 +45,9 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
           }
         },
         onModalClose: function () {
-          console.log("Modal manually closed");
-          complyCubeInstance.updateSettings({ isModalOpen: false });
-          setShowVerifyButton(false);
-        },
-        onExit: function () {
-          console.log("Exit triggered");
-          complyCubeInstance.updateSettings({ isModalOpen: false });
+          console.log('Modal manually closed')
+          complyCubeInstance.updateSettings({ isModalOpen: false })
+          setShowVerifyButton(false)
         },
       })
     }
@@ -59,7 +56,15 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
   return (
     <>
       <div id="complycube-mount"></div>
-      <button onClick={() => startVerification()}>Start verification</button>
+      <Button
+        onClick={() => startVerification()}
+        variant="outlined"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
+        Start verification
+      </Button>
     </>
   )
 }

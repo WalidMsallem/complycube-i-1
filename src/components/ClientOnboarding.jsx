@@ -57,6 +57,7 @@ const ClientOnboarding = () => {
 
   const handleCreateAnother = () => {
     setResponse(null)
+    setShowVerifyButton(true)
     setFormData({
       email: '',
       firstName: '',
