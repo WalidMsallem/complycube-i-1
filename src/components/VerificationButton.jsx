@@ -2,9 +2,9 @@ import React from 'react'
 import axios from 'axios'
 
 const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
-  const startVerification = () => {
+  const startVerification = async () => {
     if (token) {
-      window.ComplyCube.mount({
+    const complyCubeInstance = await  window.ComplyCube.mount({
         token: token,
         shouldCloseOnOverlayClick: true,
         onComplete: async function (data) {
@@ -43,10 +43,15 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
             console.error(e || 'Something went wrong')
           }
         },
-        // onModalClose: function () {
-        //   setShowVerifyButton(false)
-        //   // window.ComplyCube.updateSettings({ isModalOpen: false })
-        // },
+        onModalClose: function () {
+          console.log("Modal manually closed");
+          complyCubeInstance.updateSettings({ isModalOpen: false });
+          setShowVerifyButton(false);
+        },
+        onExit: function () {
+          console.log("Exit triggered");
+          complyCubeInstance.updateSettings({ isModalOpen: false });
+        },
       })
     }
   }
