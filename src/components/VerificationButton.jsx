@@ -6,7 +6,7 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
     if (token) {
       window.ComplyCube.mount({
         token: token,
-        shouldCloseOnOverlayClick:true,
+        shouldCloseOnOverlayClick: true,
         onComplete: async function (data) {
           console.log('Capture complete', data)
           try {
@@ -44,7 +44,6 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
           }
         },
         onModalClose: function () {
-        
           setShowVerifyButton(false)
           // window.ComplyCube.updateSettings({ isModalOpen: false })
         },
