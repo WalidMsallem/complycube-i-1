@@ -1,3 +1,4 @@
+// ask user for Consent before starting, limit documents types, show custom landing message
 export const customConfig1 = () => ({
   stages: [
     {
@@ -14,7 +15,6 @@ export const customConfig1 = () => ({
     {
       name: 'documentCapture',
       options: {
-        crossDeviceOnly: true,
         documentTypes: {
           passport: true,
           driving_license: false,

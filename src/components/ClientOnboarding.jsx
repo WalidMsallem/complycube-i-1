@@ -15,6 +15,7 @@ import VerificationButton from './VerificationButton'
 import ClientChecksList from './ClientChecksList'
 import { standardConfig } from '../integration-config/standard'
 import { customConfig1 } from '../integration-config/custom1'
+import { customConfig2 } from '../integration-config/custom2'
 
 const ClientOnboarding = () => {
   const [showVerifyButton, setShowVerifyButton] = useState(true)
@@ -185,6 +186,17 @@ const ClientOnboarding = () => {
                       setShowVerifyButton={setShowVerifyButton}
                       label="Start custom verification1"
                       config={customConfig1()}
+                    />
+                  </Box>
+
+                  <Box display="flex" flexDirection="column">
+                    {/* <Typography>Test custom checks</Typography> */}
+                    <VerificationButton
+                      token={response.token}
+                      clientId={response.clientId}
+                      setShowVerifyButton={setShowVerifyButton}
+                      label="Start verification in arabic"
+                      config={customConfig2()}
                     />
                   </Box>
                 </Box>
