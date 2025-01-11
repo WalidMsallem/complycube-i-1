@@ -43,10 +43,10 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
             console.error(e || 'Something went wrong')
           }
         },
-        onModalClose: function () {
-          setShowVerifyButton(false)
-          // window.ComplyCube.updateSettings({ isModalOpen: false })
-        },
+        // onModalClose: function () {
+        //   setShowVerifyButton(false)
+        //   // window.ComplyCube.updateSettings({ isModalOpen: false })
+        // },
       })
     }
   }
