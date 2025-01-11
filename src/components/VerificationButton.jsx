@@ -27,11 +27,6 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
                 type: 'document_check',
                 documentId: data.documentCapture.documentId,
               },
-              {
-                livePhotoId: data.documentCapture.documentId,
-                documentId: data.faceCapture.livePhotoId,
-                type: 'identity_check',
-              },
               { type: 'extensive_screening_check' },
             ]
 
@@ -47,9 +42,10 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
             console.error(e || 'Something went wrong')
           }
         },
-        onModalClose: function () {
+        onModalClose: function (testParams1, testParams2) {
+          console.log(' testParams', testParams1, testParams2)
           setShowVerifyButton(false)
-          window.ComplyCube.updateSettings({ isModalOpen: false })
+          // window.ComplyCube.updateSettings({ isModalOpen: false })
         },
       })
     }

@@ -124,7 +124,7 @@ const ClientOnboarding = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Typography variant="subtitle1">Email:</Typography>
-                  <Typography variant="body1">{response.email}</Typography>
+                  <Typography variant="body1">{formData.email}</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="subtitle1">First Name:</Typography>
