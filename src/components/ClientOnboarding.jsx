@@ -139,6 +139,7 @@ const ClientOnboarding = () => {
               {showVerifyButton && (
                 <VerificationButton
                   token={response.token}
+                  clientId={response.clientId}
                   setShowVerifyButton={setShowVerifyButton}
                 />
               )}
