@@ -13,6 +13,8 @@ import {
 import axios from 'axios'
 import VerificationButton from './VerificationButton'
 import ClientChecksList from './ClientChecksList'
+import { standardConfig } from '../integration-config/standard'
+import { customConfig1 } from '../integration-config/custom1'
 
 const ClientOnboarding = () => {
   const [showVerifyButton, setShowVerifyButton] = useState(true)
@@ -24,7 +26,11 @@ const ClientOnboarding = () => {
   })
 
   const [loading, setLoading] = useState(false)
-  const [response, setResponse] = useState()
+  const [response, setResponse] = useState({
+    token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiTURNd1kyWmhOVFV6TUdFelpXUTJNemMyT0dVNE1EQTFObVZtTVdVeU5tRmlZelZtTW1FNVl6WTRZVGhpTTJJd00yWTNaV1kyWmpReE5qVmhaV05oTWpFeFptVTNNVGM0TlRJMk56QmhZbVE1WkdGbU9EZzNNVEprTXpWaU56ZGxaV1kzT1dKaVpEYzBZamt5TnpkaU9UTmhOMkZqWW1GbVpqWmtaalZrTWpjMU5XWXhNVGd6TXpJd1kyTXpPR1UyTXpneVkyVmtOV0V6TXpnek1qWXhPVEV6TWpZNFkyWXhNR1E1WWpnMk9UVTNaamxqTldGaU9XUTBZakJpTXpoa01XUXpNbU13TW1NeU5UQTVZekl5T0dVMlpEZ3dNemM1TjJJeE5XVXlNRGM0Wm1ReE5qVmtaRGt3TUdVeU56aG1PVGxrWmpJME56VTNOVE13TlRabE9XTmpOVFEzTkdWbU9HUTFOVGxqWlRKbVkyRmxPR0ZqT1RreU0ySXpZak5sIiwidXJscyI6eyJhcGkiOiJodHRwczovL2FwaS5jb21wbHljdWJlLmNvbSIsInN5bmMiOiJ3c3M6Ly94ZHMuY29tcGx5Y3ViZS5jb20iLCJjcm9zc0RldmljZSI6Imh0dHBzOi8veGQuY29tcGx5Y3ViZS5jb20ifSwib3B0aW9ucyI6eyJoaWRlQ29tcGx5Q3ViZUxvZ28iOmZhbHNlLCJlbmFibGVDdXN0b21Mb2dvIjp0cnVlLCJlbmFibGVUZXh0QnJhbmQiOnRydWUsImVuYWJsZUN1c3RvbUNhbGxiYWNrcyI6dHJ1ZSwiZW5hYmxlTmZjIjpmYWxzZSwiaWRlbnRpdHlDaGVja0xpdmVuZXNzQXR0ZW1wdHMiOjUsImRvY3VtZW50SW5mbGlnaHRUZXN0QXR0ZW1wdHMiOjIsIm5mY1JlYWRBdHRlbXB0cyI6NSwiZW5hYmxlQWRkcmVzc0F1dG9jb21wbGV0ZSI6dHJ1ZSwiZW5hYmxlV2hpdGVMYWJlbGluZyI6ZmFsc2V9LCJpYXQiOjE3MzY2MTAzODIsImV4cCI6MTczNjYxMzk4Mn0.kfV04m_Sq2hvF7__40I9neyhsVXDJMneoSIxcylMoTU',
+    clientId: '6782924dd4773c00082cea39',
+  })
   const [error, setError] = useState(null)
 
   const handleChange = (e) => {
@@ -152,15 +158,37 @@ const ClientOnboarding = () => {
                 </ListItem>
               </List>
               <Box
-                sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}
+                sx={{
+                  mt: 4,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'column',
+                  gap:10
+                }}
               >
-                {showVerifyButton && (
-                  <VerificationButton
-                    token={response.token}
-                    clientId={response.clientId}
-                    setShowVerifyButton={setShowVerifyButton}
-                  />
-                )}
+                <Box display="flex" flexDirection="column"  gap={3}>
+                  <Box display="flex" flexDirection="column">
+                    <Typography>run basic check</Typography>
+                    <VerificationButton
+                      token={response.token}
+                      clientId={response.clientId}
+                      setShowVerifyButton={setShowVerifyButton}
+                      label="Start standard verification"
+                      config={standardConfig}
+                    />
+                  </Box>
+                  <Box display="flex" flexDirection="column">
+                    <Typography>run custom checks</Typography>
+                    <VerificationButton
+                      token={response.token}
+                      clientId={response.clientId}
+                      setShowVerifyButton={setShowVerifyButton}
+                      label="Start custom verification1"
+                      config={customConfig1}
+                    />
+                  </Box>
+                </Box>
+
                 <Button
                   variant="outlined"
                   color="primary"
