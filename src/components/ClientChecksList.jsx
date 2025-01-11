@@ -90,7 +90,6 @@ const ClientChecksList = ({ clientId }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Outcome</TableCell>
@@ -100,7 +99,6 @@ const ClientChecksList = ({ clientId }) => {
               <TableBody>
                 {checks.map((check) => (
                   <TableRow key={check.id}>
-                    <TableCell>{check.id}</TableCell>
                     <TableCell>{check.type}</TableCell>
                     <TableCell>{check.status}</TableCell>
                     <TableCell>{check.result?.outcome || 'N/A'}</TableCell>
