@@ -15,7 +15,7 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
                 'tax_document',
                 'bank_statement',
                 'utility_bill',
-              ].includes(data.documentCapture.type)
+              ].includes(data.documentCapture.documentType)
                 ? {
                     documentId: data.documentCapture.documentId,
                     type: 'proof_of_address_check',
@@ -41,7 +41,7 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
             )
             return response.data
           } catch (e) {
-            console.error(e.response?.data?.message || 'Something went wrong')
+            console.error(e || 'Something went wrong')
           }
         },
         onModalClose: function () {
