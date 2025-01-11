@@ -11,16 +11,16 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
           try {
             const checks = [
               {
-                documentId: data.documentId,
+                documentId: data.documentCapture.documentId,
                 type: 'proof_of_address_check',
               },
               {
                 type: 'document_check',
-                documentId: 'DOCUMENT_ID',
+                documentId: data.documentCapture.livePhotoId,
               },
               {
-                livePhotoId: 'LIVE_PHOTO_ID',
-                documentId: 'DOCUMENT_ID',
+                livePhotoId: data.faceCapture.documentId,
+                documentId: data.documentCapture.documentId,
                 type: 'identity_check',
               },
               { type: 'extensive_screening_check' },
