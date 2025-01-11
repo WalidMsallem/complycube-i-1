@@ -16,11 +16,13 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
                 'bank_statement',
                 'utility_bill',
               ].includes(data.documentCapture.documentType)
-                ? {
-                    documentId: data.documentCapture.documentId,
-                    type: 'proof_of_address_check',
-                  }
-                : {}),
+                ? [
+                    {
+                      documentId: data.documentCapture.documentId,
+                      type: 'proof_of_address_check',
+                    },
+                  ]
+                : []),
               {
                 type: 'document_check',
                 documentId: data.documentCapture.documentId,
@@ -32,6 +34,7 @@ const ComplyCubeIntegration = ({ token, clientId, setShowVerifyButton }) => {
               },
               { type: 'extensive_screening_check' },
             ]
+
             const response = await axios.post(
               `${process.env.REACT_APP_API_ENDPOINT}/api/checks`,
               {
