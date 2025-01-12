@@ -1,7 +1,31 @@
 import React from 'react'
 import ClientOnboarding from '../components/ClientOnboarding'
-import { getCase1Config } from '../integration-configs/config-case-1'
 import { Box, Typography } from '@mui/material'
+import axios from "axios"
+
+export const getCase1Config = (clientId) => ({
+  stages: [
+    {
+      type: 'documentCapture',
+      documentType: 'passport',
+    },
+    {
+      type: 'faceCapture',
+    },
+  ],
+  onComplete: async (data) => {
+    console.log('onComplete capture ', data)
+    const response = await axios.post(
+        `${process.env.REACT_APP_API_ENDPOINT}/api/identity-check`,
+        {
+          documentId: data.documentCapture.documentId,
+          livePhotoId: data.faceCapture.livePhotoId,
+          clientId,
+        }
+      )
+      return response.data
+  },
+})
 
 const Case1 = () => {
   return (

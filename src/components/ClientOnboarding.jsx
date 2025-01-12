@@ -17,11 +17,11 @@ import ClientChecksList from './ClientChecksList'
 function isEmpty(obj) {
   for (const prop in obj) {
     if (Object.hasOwn(obj, prop)) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
 const ClientOnboarding = ({ getConfigs }) => {
@@ -75,7 +75,7 @@ const ClientOnboarding = ({ getConfigs }) => {
 
   return (
     <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
-      {response ? (
+      {isEmpty(response) ? (
         <Box component="form" onSubmit={handleSubmit}>
           <Typography variant="h5" gutterBottom>
             Create Client
