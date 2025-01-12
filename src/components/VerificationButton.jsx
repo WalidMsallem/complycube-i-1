@@ -3,7 +3,6 @@ import { Button } from '@mui/material'
 
 const ComplyCubeIntegration = ({
   token, 
-  setShowVerifyButton,
   label,
   configs,
 }) => {
@@ -15,7 +14,6 @@ const ComplyCubeIntegration = ({
         onModalClose: function () {
           console.log('Modal manually closed')
           complyCubeInstance.updateSettings({ isModalOpen: false })
-          setShowVerifyButton(false)
         },
         ...configs,
       })
