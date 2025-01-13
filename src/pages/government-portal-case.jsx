@@ -14,7 +14,7 @@ import VerificationButton from '../components/VerificationButton'
 
 export const getCase1Config = (clientId) => ({
   stages: [
-    'userConsentCapture',
+    // 'userConsentCapture',
     // {
     //   name: 'documentCapture',
     //   options: {
