@@ -12,7 +12,7 @@ import axios from 'axios'
 import VerificationButton from '../components/VerificationButton'
 // ^ A custom button/component that opens the ComplyCube modal and triggers onVerificationComplete when finished
 
-export const getCase1Config = (clientId, onFinishCaptureInformation) => ({
+export const getConfig = (clientId, onFinishCaptureInformation) => ({
   // stages: [
   // 'userConsentCapture',
   // {
@@ -34,16 +34,21 @@ export const getCase1Config = (clientId, onFinishCaptureInformation) => ({
   // ],
   onComplete: async (data) => {
     console.log('onComplete capture ', data)
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_ENDPOINT}/api/identity-check`,
-      {
-        documentId: data.documentCapture.documentId,
-        livePhotoId: data.faceCapture.livePhotoId,
-        clientId,
-      }
-    )
-    console.log(response.data)
-    onFinishCaptureInformation()
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_ENDPOINT}/api/identity-check`,
+        {
+          documentId: data.documentCapture.documentId,
+          livePhotoId: data.faceCapture.livePhotoId,
+          clientId,
+        }
+      )
+      console.log(response.data)
+      onFinishCaptureInformation()
+    }catch(e){
+      console.error(e)
+    }
+  
   },
 })
 
@@ -245,7 +250,7 @@ const GovernmentPortalAccess = () => {
             <VerificationButton
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
-              configs={getCase1Config(tokenResponse.clientId, () =>
+              configs={getConfig(tokenResponse.clientId, () =>
                 handleVerificationComplete()
               )}
               label="Start Verification"

@@ -7,7 +7,7 @@ import Home from './pages/home';
 // import CaseAddress from './pages/CaseAddress';
 import Sidebar from './components/SideBar';
 import GovernmentPortalCase from './pages/government-portal-case';
-import Case2 from './pages/case2';
+import TraderOnboarding from './pages/trader-onboarding';
 
 const App = () => {
   return (
@@ -18,9 +18,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/government-portal" element={<GovernmentPortalCase />} />
-            <Route path="/case-trader" element={<Case2 />} />
-            <Route path="/case-gaming" element={<Case2 />} />
-            <Route path="/case-address" element={<Case2 />} />
+            <Route path="/case-trader" element={<TraderOnboarding />} />
+            <Route path="/case-gaming" element={<TraderOnboarding />} />
+            <Route path="/case-address" element={<TraderOnboarding />} />
           </Routes>
         </div>
       </div>
