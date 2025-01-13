@@ -13,7 +13,7 @@ import VerificationButton from '../components/VerificationButton'
 // ^ A custom button/component that opens the ComplyCube modal and triggers onVerificationComplete when finished
 
 export const getCase1Config = (clientId) => ({
-  stages: [
+  // stages: [
     // 'userConsentCapture',
     // {
     //   name: 'documentCapture',
@@ -28,10 +28,10 @@ export const getCase1Config = (clientId) => ({
     //     },
     //   },
     // },
-    {
-      type: 'faceCapture',
-    },
-  ],
+    // {
+    //   type: 'faceCapture',
+    // },
+  // ],
   onComplete: async (data) => {
     console.log('onComplete capture ', data)
     const response = await axios.post(
