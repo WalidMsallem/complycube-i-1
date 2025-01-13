@@ -12,25 +12,25 @@ import axios from 'axios'
 import VerificationButton from '../components/VerificationButton'
 // ^ A custom button/component that opens the ComplyCube modal and triggers onVerificationComplete when finished
 
-export const getCase1Config = (clientId) => ({
+export const getCase1Config = (clientId, onFinishCaptureInformation) => ({
   // stages: [
-    // 'userConsentCapture',
-    // {
-    //   name: 'documentCapture',
-    //   options: {
-    //     documentTypes: {
-    //       passport: true,
-    //       driving_license: false,
-    //       national_identity_card: true,
-    //       residence_permit: {
-    //         country: 'GB',
-    //       },
-    //     },
-    //   },
-    // },
-    // {
-    //   type: 'faceCapture',
-    // },
+  // 'userConsentCapture',
+  // {
+  //   name: 'documentCapture',
+  //   options: {
+  //     documentTypes: {
+  //       passport: true,
+  //       driving_license: false,
+  //       national_identity_card: true,
+  //       residence_permit: {
+  //         country: 'GB',
+  //       },
+  //     },
+  //   },
+  // },
+  // {
+  //   type: 'faceCapture',
+  // },
   // ],
   onComplete: async (data) => {
     console.log('onComplete capture ', data)
@@ -42,12 +42,17 @@ export const getCase1Config = (clientId) => ({
         clientId,
       }
     )
-    return response.data
+    console.log(response.data)
+    onFinishCaptureInformation()
   },
 })
 
 // Simulate checking status from your backend after verification completes
-// In reality, you'd call e.g. /api/check-status?clientId=xxx
+// In a real scenario, you'd call something like:
+// const res = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/check-status?clientId=${clientId}`);
+// return res.data; // e.g. { status: 'clear' } or { status: 'pending' }
+// or BE will set a a flag on the user Data like onboarded / verify = true
+
 function checkVerificationStatus(clientId) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -241,7 +246,10 @@ const GovernmentPortalAccess = () => {
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
               onVerificationComplete={handleVerificationComplete}
-              configs={getCase1Config(tokenResponse.clientId)}
+              configs={getCase1Config(
+                tokenResponse.clientId,
+                setStep('processing')
+              )}
               label="Start Verification"
             />
           </CardContent>
