@@ -29,7 +29,7 @@ export const getConfig = (clientId, onFinishCaptureInformation) => ({
         'https://static.vecteezy.com/system/resources/thumbnails/000/609/739/small/3-19.jpg',
     },
   },
- 
+
   stages: [
     {
       type: 'documentCapture',
@@ -43,6 +43,16 @@ export const getConfig = (clientId, onFinishCaptureInformation) => ({
     },
     {
       type: 'faceCapture',
+      options: {
+        mode: 'photo',
+      },
+    },
+    {
+      type: 'faceCapture',
+      options: {
+        mode: 'video',
+      },
+
     },
   ],
   onComplete: async (data) => {
@@ -286,9 +296,8 @@ const TraderOnboarding = () => {
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
               // IMPORTANT: pass the dynamic config with your onComplete logic
-              config={getConfig(
-                tokenResponse.clientId,
-                handleVerificationComplete
+              config={getConfig(tokenResponse.clientId, () =>
+                handleVerificationComplete()
               )}
               label="Start verification"
             />
