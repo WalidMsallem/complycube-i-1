@@ -272,28 +272,34 @@ const GovernmentPortalAccess = () => {
             {renderResult()}
 
             {/* Explanation of the flow for the user, after they've seen the outcome */}
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>
-                Identity Check -> Biometric Verification : How This Verification
-                Works
-              </Typography>
-              <Typography>
-                1 - Perform an Identity Check using your government-issued ID.
-              </Typography>
-              <Typography>
-                2 - If your ID is valid, we run a Face Authentication Check to
-                match your live photo with the document.
-              </Typography>
-              <Typography>
-                3 - If that’s also successful, we grant you access.
-              </Typography>
-              <Typography sx={{ mt: 2, fontWeight: 'bold' }}>Why:</Typography>
-              <Typography>
-                This ensures that only legitimate users with valid documents can
-                view sensitive information, protecting your data from
-                unauthorized access.
-              </Typography>
-            </Box>
+            <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
+      <Typography fontWeight="bold" fontSize={20}>
+        Multi-Stage Document Validation
+      </Typography>
+      <Box>
+        Flow:
+        <Typography>
+          1 - Perform a Document Check on a utility bill to verify the client’s
+          address.
+        </Typography>
+        <Typography>
+          2- If the document is Clear, perform a Proof of Address Check to
+          ensure compliance with KYC regulations.
+        </Typography>
+        <Typography>
+          3- If the Proof of Address Check passes, mark the client’s address as
+          verified in the portal.
+        </Typography>
+        <Typography>Why:</Typography>
+        <Typography>
+          Useful in scenarios where address verification is critical, such as
+          property rentals or insurance.
+        </Typography>
+        <Typography fontSize={12} marginTop={2}>
+          Checks flow is trigger in the BE once the onboarding is complete{' '}
+        </Typography>
+      </Box>
+      </Box>
           </CardContent>
         </Card>
       )}

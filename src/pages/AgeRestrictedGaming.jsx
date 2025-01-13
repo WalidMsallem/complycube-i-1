@@ -1,6 +1,5 @@
-// src/pages/TraderOnboarding.jsx
+// src/pages/AgeRestrictedGaming.jsx
 import React, { useState } from 'react'
-import axios from 'axios'
 import {
   Box,
   Typography,
@@ -10,79 +9,71 @@ import {
   Card,
   CardContent,
 } from '@mui/material'
+import axios from 'axios'
 import VerificationButton from '../components/VerificationButton'
 
-/**
- * getConfig - For a Trader Onboarding scenario
- * @param {string} clientId
- * @param {function} onFinishCaptureInformation - Callback once checks are complete
- * @returns {object} ComplyCube config object
- */
 export const getConfig = (clientId, onFinishCaptureInformation) => ({
   branding: {
-    // Customize the modal colors, fonts, or logo
-    primaryColor: '#1565c0',
+    primaryColor: '#9C27B0', // Neon purple for buttons/accents
     buttonTextColor: '#ffffff',
-    fontFamily: 'Arial, sans-serif',
+    textColor: '#ffffff',
+    // You can also set backgroundColor, fontFamily, logoUrl, etc.
     logo: {
       lightLogoUrl:
-        'https://static.vecteezy.com/system/resources/thumbnails/000/609/739/small/3-19.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDVzhq1gqrjoL3QCQhX3Qrk4E-ScJxy3kyOQ&s',
     },
   },
- 
   stages: [
+    // For age verification, you might capture a face photo or an ID document
+    {
+      type: 'faceCapture',
+    },
     {
       type: 'documentCapture',
       options: {
         documentTypes: {
-          passport: true,
           driving_license: true,
           national_identity_card: true,
+          passport: true,
         },
       },
     },
-    {
-      type: 'faceCapture',
-    },
   ],
   onComplete: async (data) => {
-    // data contains e.g. data.documentCapture.documentId, data.faceCapture.livePhotoId
-    console.log('SDK capture complete:', data)
+    console.log('18+ Gaming capture complete:', data)
 
     try {
-      // Now call your "staggered-screening" endpoint
-      // e.g., it might first do a standard_screening_check, then extensive, then enable monitoring.
+      // Example call to your age-verification endpoint
       const response = await axios.post(
-        `${process.env.REACT_APP_API_ENDPOINT}/api/staggered-screening`,
+        `${process.env.REACT_APP_API_ENDPOINT}/api/age-verification`,
         {
           clientId,
-          documentId: data.documentCapture?.documentId,
           livePhotoId: data.faceCapture?.livePhotoId,
+          documentId: data.documentCapture?.documentId,
         }
       )
-      console.log('Staggered Screening Result:', response.data)
+      console.log('Age verification result:', response.data)
 
-      // Finally, tell the parent component we’re done
+      // Once done, let the parent component know
       onFinishCaptureInformation()
     } catch (error) {
-      console.error('Error in onComplete:', error)
-      // Optionally handle UI feedback if checks fail
+      console.error('Error verifying age:', error)
       onFinishCaptureInformation()
     }
   },
 })
 
-// Mock check to see if results are cleared (simulating a final pass/fail status)
+// Example function to mock a final status check
 function checkVerificationStatus(clientId) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Mock: always returns "clear"
+      // We'll pretend it's always clear
       resolve({ status: 'clear' })
     }, 2000)
   })
 }
 
-const TraderOnboarding = () => {
+const AgeRestrictedGaming = () => {
   // Steps: 'welcome' -> 'enterData' -> 'verificationPrompt' -> 'processing' -> 'result'
   const [step, setStep] = useState('welcome')
 
@@ -96,12 +87,12 @@ const TraderOnboarding = () => {
   const [tokenResponse, setTokenResponse] = useState(null)
   const [verificationOutcome, setVerificationOutcome] = useState(null)
 
-  // 1) Welcome screen -> form
+  // 1) Welcome
   const handleBegin = () => {
     setStep('enterData')
   }
 
-  // 2) Submit user details to get token
+  // 2) Enter Data -> get token
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -124,10 +115,8 @@ const TraderOnboarding = () => {
     }
   }
 
-  // 3) Once the Web SDK finishes capturing data, it calls onComplete from config,
-  //    which calls onFinishCaptureInformation -> we come here
+  // Called when the SDK completes
   const handleVerificationComplete = async () => {
-    // We can do a final check or show a spinner
     setStep('processing')
 
     try {
@@ -137,84 +126,110 @@ const TraderOnboarding = () => {
       } else {
         setVerificationOutcome('fail')
       }
-    } catch (error) {
+    } catch (err) {
       setVerificationOutcome('fail')
     }
 
     setStep('result')
   }
 
-  // 4) Final result screen
   const renderResult = () => {
     if (verificationOutcome === 'success') {
       return (
         <Box textAlign="center">
-          <Typography variant="h5" color="success.main" gutterBottom>
-            You’re Verified!
+          <Typography
+            variant="h5"
+            color="#00e676"
+            gutterBottom /* Neon Green */
+          >
+            Access Granted!
           </Typography>
           <Typography>
-            Welcome to CC Trading! You can now buy and sell stocks, bonds, and
-            crypto securely.
+            Welcome to NeoGaming! Enjoy our 18+ content responsibly.
           </Typography>
         </Box>
       )
     }
     return (
       <Box textAlign="center">
-        <Typography variant="h5" color="error" gutterBottom>
+        <Typography variant="h5" color="#ff1744" gutterBottom /* Neon Red */>
           Verification Failed
         </Typography>
         <Typography>
-          We couldn’t confirm your identity. Please try again or contact support
-          for help.
+          We could not confirm you’re over 18. Please try again or contact
+          support.
         </Typography>
       </Box>
     )
   }
 
-  // Render the flow
+  // **Dark theme styling** for the entire container
+  const containerStyle = {
+    backgroundColor: '#121212', // Dark background
+    minHeight: '100vh',
+    py: 5,
+    color: '#ffffff', // White text
+    width:"100%"
+  }
+
+  // **Card** styling: a lighter dark shade
+  const cardStyle = {
+    backgroundColor: '#1D1F24',
+    color: '#E0E0E0',
+    margin: 'auto',
+    maxWidth: 600,
+    mb: 4,
+  }
+
+  // **Button** styling: neon purple accent
+  const neonButtonStyle = {
+    backgroundColor: '#9C27B0',
+    color: '#ffffff',
+    ':hover': { backgroundColor: '#7B1FA2' },
+  }
+
   return (
-    <Box sx={{ width: 600, mx: 'auto', mt: 5 }}>
+    <Box sx={containerStyle}>
+      {/* STEP: WELCOME */}
       {step === 'welcome' && (
-        <Card sx={{ backgroundColor: '#f0f3ff' /* Light bluish background */ }}>
+        <Card sx={cardStyle}>
           <CardContent sx={{ textAlign: 'center', py: 4 }}>
+            {/* Fake "NeoGaming" or "NightArcade" Logo */}
             <Box sx={{ mb: 2 }}>
               <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/000/609/739/small/3-19.jpg"
-                alt="CC Trading Logo"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDVzhq1gqrjoL3QCQhX3Qrk4E-ScJxy3kyOQ&s"
+                alt="NeoGaming Logo"
                 style={{ borderRadius: 8 }}
               />
             </Box>
             <Typography variant="h4" fontWeight="bold" gutterBottom>
-              CC Trading Onboarding
+              Welcome to NeoGaming
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
-              Securely verify your identity to start trading with us.
+              Ready to dive into thrilling 18+ games? Let’s quickly verify your
+              age to keep it safe and legal.
             </Typography>
             <Button
               variant="contained"
               onClick={handleBegin}
-              sx={{
-                backgroundColor: '#1e88e5',
-                ':hover': { backgroundColor: '#1565c0' },
-              }}
+              sx={neonButtonStyle}
             >
-              Begin
+              Verify Now
             </Button>
           </CardContent>
         </Card>
       )}
 
+      {/* STEP: ENTER DATA */}
       {step === 'enterData' && (
-        // <Card sx={{ backgroundColor: '#fff7e6' }}>
-        <Card>
+        <Card sx={cardStyle}>
           <CardContent>
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Personal Information
+              Player Details
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              Please provide your details, and we'll verify you for a safe
-              trading environment.
+              Enter your info to prove you’re 18 or older. We keep it
+              confidential!
             </Typography>
             <Box component="form" onSubmit={handleFormSubmit}>
               <TextField
@@ -226,6 +241,10 @@ const TraderOnboarding = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
+                sx={{
+                  input: { color: '#ffffff' },
+                  label: { color: '#9e9e9e' },
+                }}
               />
               <TextField
                 label="First Name"
@@ -236,6 +255,10 @@ const TraderOnboarding = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
+                sx={{
+                  input: { color: '#ffffff' },
+                  label: { color: '#9e9e9e' },
+                }}
               />
               <TextField
                 label="Last Name"
@@ -246,10 +269,14 @@ const TraderOnboarding = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
+                sx={{
+                  input: { color: '#ffffff' },
+                  label: { color: '#9e9e9e' },
+                }}
               />
 
               {error && (
-                <Typography color="error" sx={{ mt: 2 }}>
+                <Typography color="#ff1744" sx={{ mt: 2 }}>
                   {error}
                 </Typography>
               )}
@@ -261,8 +288,8 @@ const TraderOnboarding = () => {
                 sx={{
                   mt: 3,
                   width: '100%',
-                  // backgroundColor: '#ffa726',
-                  // ':hover': { backgroundColor: '#fb8c00' },
+                  backgroundColor: '#9C27B0',
+                  ':hover': { backgroundColor: '#7B1FA2' },
                 }}
               >
                 {loading ? <CircularProgress size={24} /> : 'Continue'}
@@ -272,63 +299,67 @@ const TraderOnboarding = () => {
         </Card>
       )}
 
+      {/* STEP: VERIFICATION PROMPT */}
       {step === 'verificationPrompt' && tokenResponse && (
-        <Card sx={{ backgroundColor: '#eef7ee' }}>
+        <Card sx={cardStyle}>
           <CardContent sx={{ textAlign: 'center' }}>
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Identity Verification
+              Age Verification
             </Typography>
             <Typography sx={{ mb: 3 }}>
-              Please complete the required checks. We’ll confirm your status
-              once the pop-up closes.
+              Just one quick check and you’re in! Close the pop-up when done,
+              and we’ll confirm your status.
             </Typography>
             <VerificationButton
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
-              // IMPORTANT: pass the dynamic config with your onComplete logic
               config={getConfig(
                 tokenResponse.clientId,
                 handleVerificationComplete
               )}
-              label="Start verification"
             />
           </CardContent>
         </Card>
       )}
 
+      {/* STEP: PROCESSING */}
       {step === 'processing' && (
         <Box textAlign="center" sx={{ mt: 4 }}>
-          <CircularProgress />
-          <Typography sx={{ mt: 2 }}>Verifying your details...</Typography>
+          <CircularProgress sx={{ color: '#9C27B0' }} />
+          <Typography sx={{ mt: 2 }}>Verifying your age...</Typography>
         </Box>
       )}
 
+      {/* STEP: RESULT */}
       {step === 'result' && (
-        <Card>
+        <Card sx={cardStyle}>
           <CardContent>
             {renderResult()}
             <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
               <Typography fontWeight="bold" fontSize={20}>
-                Staggered Screening with Monitoring
+                Age-Restricted Screening
               </Typography>
-              <Box variant="h6" fontWeight="bold" gutterBottom>
+              <Box>
                 Flow:
                 <Typography>
-                  1 - Start with a Standard Screening Check to quickly identify
-                  major compliance issues.
+                  1 - Perform an Age Estimation Check using a live photo.
                 </Typography>
                 <Typography>
-                  2- If the Standard Screening Check is Clear, upgrade to an
-                  Extensive Screening Check.
+                  2- If the client’s age is above the required threshold (e.g.,
+                  18 years old), allow the onboarding process to proceed.
                 </Typography>
                 <Typography>
-                  3- Enable Continuous Monitoring on the client if both checks
-                  are clear, ensuring any future compliance risks are flagged.
+                  3- If the Age Estimation Check fails, trigger a manual
+                  document check for a government-issued ID to confirm the
+                  client’s age.
                 </Typography>
-                <Typography sx={{ mt: 2, fontWeight: 'bold' }}>Why:</Typography>
+                <Typography>Why:</Typography>
                 <Typography>
-                  This ensures we comply with financial regulations and provide
-                  a safe trading platform.
+                  Useful for businesses with age restrictions, like alcohol
+                  sales or gambling.
+                </Typography>
+                <Typography>
+                  Combines biometric and document-based validation for accuracy.
                 </Typography>
                 <Typography fontSize={12} marginTop={2}>
                   Checks flow is trigger in the BE once the onboarding is
@@ -343,4 +374,4 @@ const TraderOnboarding = () => {
   )
 }
 
-export default TraderOnboarding
+export default AgeRestrictedGaming

@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 
 const ComplyCubeIntegration = ({
   token, 
-  label,
+  label = 'Start Verification',
   configs,
 }) => {
   const startVerification = async () => {

@@ -1,6 +1,5 @@
-// src/pages/TraderOnboarding.jsx
+// src/pages/MultiStageAddress.jsx
 import React, { useState } from 'react'
-import axios from 'axios'
 import {
   Box,
   Typography,
@@ -10,82 +9,67 @@ import {
   Card,
   CardContent,
 } from '@mui/material'
+import axios from 'axios'
 import VerificationButton from '../components/VerificationButton'
 
-/**
- * getConfig - For a Trader Onboarding scenario
- * @param {string} clientId
- * @param {function} onFinishCaptureInformation - Callback once checks are complete
- * @returns {object} ComplyCube config object
- */
 export const getConfig = (clientId, onFinishCaptureInformation) => ({
   branding: {
-    // Customize the modal colors, fonts, or logo
-    primaryColor: '#1565c0',
-    buttonTextColor: '#ffffff',
-    fontFamily: 'Arial, sans-serif',
+    primaryColor: '#FF9800',
+    buttonTextColor: '#FFFFFF',
+    textColor: '#333333',
+    fontFamily: 'Segoe UI, sans-serif',
     logo: {
       lightLogoUrl:
-        'https://static.vecteezy.com/system/resources/thumbnails/000/609/739/small/3-19.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXiKY8SmRi-q0Kj3WfVcGRq0C61qvEDEnOBA&s',
+        darkLogoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXiKY8SmRi-q0Kj3WfVcGRq0C61qvEDEnOBA&s',
     },
   },
- 
   stages: [
+    "userConsentCapture",
     {
       type: 'documentCapture',
+    },
+    {
+      type: 'poaCapture',
       options: {
         documentTypes: {
-          passport: true,
-          driving_license: true,
-          national_identity_card: true,
+          utility_bill: true,
+          bank_statement: true,
         },
       },
     },
-    {
-      type: 'faceCapture',
-    },
   ],
   onComplete: async (data) => {
-    // data contains e.g. data.documentCapture.documentId, data.faceCapture.livePhotoId
-    console.log('SDK capture complete:', data)
-
+    console.log('Multi-stage address capture complete:', data)
     try {
-      // Now call your "staggered-screening" endpoint
-      // e.g., it might first do a standard_screening_check, then extensive, then enable monitoring.
       const response = await axios.post(
-        `${process.env.REACT_APP_API_ENDPOINT}/api/staggered-screening`,
+        `${process.env.REACT_APP_API_ENDPOINT}/api/document-validation`,
         {
           clientId,
           documentId: data.documentCapture?.documentId,
-          livePhotoId: data.faceCapture?.livePhotoId,
+          // If the second doc is stored differently in 'data', adapt accordingly
         }
       )
-      console.log('Staggered Screening Result:', response.data)
-
-      // Finally, tell the parent component we’re done
+      console.log('Address check response:', response.data)
       onFinishCaptureInformation()
     } catch (error) {
-      console.error('Error in onComplete:', error)
-      // Optionally handle UI feedback if checks fail
+      console.error('Error in multi-stage address flow:', error)
       onFinishCaptureInformation()
     }
   },
 })
 
-// Mock check to see if results are cleared (simulating a final pass/fail status)
+// Mock function simulating final status check
 function checkVerificationStatus(clientId) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Mock: always returns "clear"
-      resolve({ status: 'clear' })
+      resolve({ status: 'clear' }) // Pretend success
     }, 2000)
   })
 }
 
-const TraderOnboarding = () => {
-  // Steps: 'welcome' -> 'enterData' -> 'verificationPrompt' -> 'processing' -> 'result'
+const MultiStageAddress = () => {
   const [step, setStep] = useState('welcome')
-
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -96,12 +80,14 @@ const TraderOnboarding = () => {
   const [tokenResponse, setTokenResponse] = useState(null)
   const [verificationOutcome, setVerificationOutcome] = useState(null)
 
-  // 1) Welcome screen -> form
+  // Flow: 'welcome' -> 'enterData' -> 'verificationPrompt' -> 'processing' -> 'result'
+
+  // 1) Welcome
   const handleBegin = () => {
     setStep('enterData')
   }
 
-  // 2) Submit user details to get token
+  // 2) Submit user data -> get token
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -124,12 +110,9 @@ const TraderOnboarding = () => {
     }
   }
 
-  // 3) Once the Web SDK finishes capturing data, it calls onComplete from config,
-  //    which calls onFinishCaptureInformation -> we come here
+  // Called after the Web SDK completes capturing multiple docs
   const handleVerificationComplete = async () => {
-    // We can do a final check or show a spinner
     setStep('processing')
-
     try {
       const status = await checkVerificationStatus(tokenResponse.clientId)
       if (status.status === 'clear') {
@@ -140,21 +123,19 @@ const TraderOnboarding = () => {
     } catch (error) {
       setVerificationOutcome('fail')
     }
-
     setStep('result')
   }
 
-  // 4) Final result screen
   const renderResult = () => {
     if (verificationOutcome === 'success') {
       return (
         <Box textAlign="center">
           <Typography variant="h5" color="success.main" gutterBottom>
-            You’re Verified!
+            Address Verified!
           </Typography>
           <Typography>
-            Welcome to CC Trading! You can now buy and sell stocks, bonds, and
-            crypto securely.
+            You’re all set to proceed with your rental application on{' '}
+            <b>Rently</b>.
           </Typography>
         </Box>
       )
@@ -165,56 +146,75 @@ const TraderOnboarding = () => {
           Verification Failed
         </Typography>
         <Typography>
-          We couldn’t confirm your identity. Please try again or contact support
-          for help.
+          We couldn’t confirm your address. Please try again or contact support.
         </Typography>
       </Box>
     )
   }
 
-  // Render the flow
+  // Some simple styling for a warm, renting-oriented theme
+  const containerStyle = {
+    // backgroundColor: '#faf8f4',
+    minHeight: '100vh',
+    py: 5,
+  }
+  const cardStyle = {
+    backgroundColor: '#ffffff',
+    margin: 'auto',
+    width: "100%",
+    mb: 4,
+  }
+  const headerColor = '#4CAF50' // e.g. a bright green accent
+  const buttonColor = '#FF9800' // warm orange for main CTA
+
   return (
-    <Box sx={{ width: 600, mx: 'auto', mt: 5 }}>
+    <Box sx={containerStyle}>
+      {/* STEP: WELCOME */}
       {step === 'welcome' && (
-        <Card sx={{ backgroundColor: '#f0f3ff' /* Light bluish background */ }}>
+        <Card sx={cardStyle}>
           <CardContent sx={{ textAlign: 'center', py: 4 }}>
             <Box sx={{ mb: 2 }}>
               <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/000/609/739/small/3-19.jpg"
-                alt="CC Trading Logo"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXiKY8SmRi-q0Kj3WfVcGRq0C61qvEDEnOBA&s"
+                alt="Rently Logo"
                 style={{ borderRadius: 8 }}
               />
             </Box>
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-              CC Trading Onboarding
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              gutterBottom
+              color={headerColor}
+            >
+              Welcome to Rently
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
-              Securely verify your identity to start trading with us.
+              Let's verify your address documents so you can secure your new
+              home.
             </Typography>
             <Button
               variant="contained"
               onClick={handleBegin}
               sx={{
-                backgroundColor: '#1e88e5',
-                ':hover': { backgroundColor: '#1565c0' },
+                backgroundColor: buttonColor,
+                ':hover': { backgroundColor: '#F57C00' },
               }}
             >
-              Begin
+              Get Started
             </Button>
           </CardContent>
         </Card>
       )}
 
+      {/* STEP: ENTER DATA */}
       {step === 'enterData' && (
-        // <Card sx={{ backgroundColor: '#fff7e6' }}>
-        <Card>
+        <Card sx={cardStyle}>
           <CardContent>
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Personal Information
+              Applicant Information
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              Please provide your details, and we'll verify you for a safe
-              trading environment.
+              We’ll need a few details to generate your verification link.
             </Typography>
             <Box component="form" onSubmit={handleFormSubmit}>
               <TextField
@@ -261,8 +261,8 @@ const TraderOnboarding = () => {
                 sx={{
                   mt: 3,
                   width: '100%',
-                  // backgroundColor: '#ffa726',
-                  // ':hover': { backgroundColor: '#fb8c00' },
+                  backgroundColor: buttonColor,
+                  ':hover': { backgroundColor: '#F57C00' },
                 }}
               >
                 {loading ? <CircularProgress size={24} /> : 'Continue'}
@@ -272,69 +272,64 @@ const TraderOnboarding = () => {
         </Card>
       )}
 
+      {/* STEP: VERIFICATION PROMPT */}
       {step === 'verificationPrompt' && tokenResponse && (
-        <Card sx={{ backgroundColor: '#eef7ee' }}>
+        <Card sx={cardStyle}>
           <CardContent sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Identity Verification
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              gutterBottom
+              color={headerColor}
+            >
+              Address Verification
             </Typography>
             <Typography sx={{ mb: 3 }}>
-              Please complete the required checks. We’ll confirm your status
-              once the pop-up closes.
+              Please upload your utility bill and any additional proof of
+              address. We’ll confirm once the pop-up closes.
             </Typography>
             <VerificationButton
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
-              // IMPORTANT: pass the dynamic config with your onComplete logic
-              config={getConfig(
-                tokenResponse.clientId,
-                handleVerificationComplete
+              configs={getConfig(tokenResponse.clientId, () =>
+                handleVerificationComplete()
               )}
-              label="Start verification"
+
             />
           </CardContent>
         </Card>
       )}
 
+      {/* STEP: PROCESSING */}
       {step === 'processing' && (
         <Box textAlign="center" sx={{ mt: 4 }}>
-          <CircularProgress />
-          <Typography sx={{ mt: 2 }}>Verifying your details...</Typography>
+          <CircularProgress sx={{ color: headerColor }} />
+          <Typography sx={{ mt: 2 }}>Validating your documents...</Typography>
         </Box>
       )}
 
+      {/* STEP: RESULT */}
       {step === 'result' && (
-        <Card>
+        <Card sx={cardStyle}>
           <CardContent>
             {renderResult()}
-            <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
-              <Typography fontWeight="bold" fontSize={20}>
-                Staggered Screening with Monitoring
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                How This Works
               </Typography>
-              <Box variant="h6" fontWeight="bold" gutterBottom>
-                Flow:
-                <Typography>
-                  1 - Start with a Standard Screening Check to quickly identify
-                  major compliance issues.
-                </Typography>
-                <Typography>
-                  2- If the Standard Screening Check is Clear, upgrade to an
-                  Extensive Screening Check.
-                </Typography>
-                <Typography>
-                  3- Enable Continuous Monitoring on the client if both checks
-                  are clear, ensuring any future compliance risks are flagged.
-                </Typography>
-                <Typography sx={{ mt: 2, fontWeight: 'bold' }}>Why:</Typography>
-                <Typography>
-                  This ensures we comply with financial regulations and provide
-                  a safe trading platform.
-                </Typography>
-                <Typography fontSize={12} marginTop={2}>
-                  Checks flow is trigger in the BE once the onboarding is
-                  complete{' '}
-                </Typography>
-              </Box>
+              <Typography>
+                1 - You capture a utility bill (or similar) to confirm your
+                current residence.
+              </Typography>
+              <Typography>
+                2 - If the first doc is clear, we need an additional proof of
+                address for full compliance.
+              </Typography>
+              <Typography sx={{ mt: 2, fontWeight: 'bold' }}>Why:</Typography>
+              <Typography>
+                Renting a property is a big commitment. We verify your address
+                thoroughly to protect both you and the landlord.
+              </Typography>
             </Box>
           </CardContent>
         </Card>
@@ -343,4 +338,4 @@ const TraderOnboarding = () => {
   )
 }
 
-export default TraderOnboarding
+export default MultiStageAddress
