@@ -245,10 +245,8 @@ const GovernmentPortalAccess = () => {
             <VerificationButton
               token={tokenResponse.token}
               clientId={tokenResponse.clientId}
-              onVerificationComplete={handleVerificationComplete}
-              configs={getCase1Config(
-                tokenResponse.clientId,
-                setStep('processing')
+              configs={getCase1Config(tokenResponse.clientId, () =>
+                handleVerificationComplete()
               )}
               label="Start Verification"
             />
