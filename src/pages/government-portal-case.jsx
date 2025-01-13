@@ -15,19 +15,19 @@ import VerificationButton from '../components/VerificationButton'
 export const getCase1Config = (clientId) => ({
   stages: [
     'userConsentCapture',
-    {
-      name: 'documentCapture',
-      options: {
-        documentTypes: {
-          passport: true,
-          driving_license: false,
-          national_identity_card: true,
-          residence_permit: {
-            country: 'GB',
-          },
-        },
-      },
-    },
+    // {
+    //   name: 'documentCapture',
+    //   options: {
+    //     documentTypes: {
+    //       passport: true,
+    //       driving_license: false,
+    //       national_identity_card: true,
+    //       residence_permit: {
+    //         country: 'GB',
+    //       },
+    //     },
+    //   },
+    // },
     {
       type: 'faceCapture',
     },
