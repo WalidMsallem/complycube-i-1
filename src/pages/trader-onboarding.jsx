@@ -52,7 +52,6 @@ export const getConfig = (clientId, onFinishCaptureInformation) => ({
       options: {
         mode: 'video',
       },
-
     },
   ],
   onComplete: async (data) => {
@@ -186,7 +185,7 @@ const TraderOnboarding = () => {
   return (
     <Box sx={{ width: 600, mx: 'auto', mt: 5 }}>
       {step === 'welcome' && (
-        <Card sx={{ backgroundColor: '#f0f3ff' /* Light bluish background */ }}>
+        <Card sx={{ backgroundColor: '#eef7ee' }}>
           <CardContent sx={{ textAlign: 'center', py: 4 }}>
             <Box sx={{ mb: 2 }}>
               <img
@@ -216,7 +215,6 @@ const TraderOnboarding = () => {
       )}
 
       {step === 'enterData' && (
-        // <Card sx={{ backgroundColor: '#fff7e6' }}>
         <Card>
           <CardContent>
             <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -271,8 +269,6 @@ const TraderOnboarding = () => {
                 sx={{
                   mt: 3,
                   width: '100%',
-                  // backgroundColor: '#ffa726',
-                  // ':hover': { backgroundColor: '#fb8c00' },
                 }}
               >
                 {loading ? <CircularProgress size={24} /> : 'Continue'}

@@ -8,12 +8,14 @@ import TraderOnboarding from './pages/trader-onboarding'
 import AgeRestrictedGaming from './pages/AgeRestrictedGaming'
 import MultiStageAddress from './pages/MultiStageAddress'
 import { Box, CssBaseline, ThemeProvider } from '@mui/material'
+import { Analytics } from "@vercel/analytics/react"
 
 import { theme } from './utils/theme'
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
+      <Analytics/>
       <CssBaseline />
       <Router>
         <Box style={{ display: 'flex' }}>
